@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoLibris - Digital Library Resource Management Framework</title>
+  <meta name="description" content="AutoLibris Web: Digital Library Management Framework inspired by ANSI C binary file records and pointer architecture.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js for Interactive Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+            <path d="M6 6h10"></path>
+            <path d="M6 10h10"></path>
+            <path d="M6 14h7"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">AutoLibris</span>
+          <span class="brand-tag">ANSI C Binary Engine</span>
+        </div>
+      </div>
+
+      <div class="engine-badge">
+        <span class="pulse-dot"></span>
+        <span>Storage: 3 Binary Tables Aligned</span>
+      </div>
+
+      <nav class="nav-menu">
+        <div class="nav-section-title">CORE MODULES</div>
+        <button class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+          <span>Overview</span>
+        </button>
+        <button class="nav-item" data-tab="users" id="nav-users">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>1. User Management</span>
+          <span class="badge" id="badge-users-count">4</span>
+        </button>
+        <button class="nav-item" data-tab="books" id="nav-books">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          <span>2. Book Management</span>
+          <span class="badge" id="badge-books-count">14</span>
+        </button>
+        <button class="nav-item" data-tab="issue-return" id="nav-issue-return">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 3 4 4-4 4"></path><path d="M20 7H4"></path><path d="m8 21-4-4 4-4"></path><path d="M4 17h16"></path></svg>
+          <span>3. Issue & Return</span>
+          <span class="badge badge-warning" id="badge-active-loans">4</span>
+        </button>
+        <button class="nav-item" data-tab="file-management" id="nav-file-management">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <span>4. File Management</span>
+        </button>
+        <button class="nav-item" data-tab="reports" id="nav-reports">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          <span>5. Reports & Graphs</span>
+        </button>
+        <div class="nav-section-title">POINTER & RAM SIMULATOR</div>
+        <button class="nav-item" data-tab="ram-pointers" id="nav-ram-pointers">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+          <span>Dynamic RAM List</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="data-file-status">
+          <div class="file-item"><span>books.dat</span><span class="file-sz" id="sb-books-size">3.6 KB</span></div>
+          <div class="file-item"><span>users.dat</span><span class="file-sz" id="sb-users-size">944 B</span></div>
+          <div class="file-item"><span>borrow_records.dat</span><span class="file-sz" id="sb-records-size">280 B</span></div>
+        </div>
+        <button class="btn btn-sm btn-outline-warning w-100 mt-2" id="btn-reset-baseline" title="Restore exact default C sample data">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          Reset C Baseline
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="btn-icon mobile-toggle" id="btn-toggle-sidebar" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <div class="page-title-group">
+            <h1 class="page-title" id="current-page-title">AutoLibris Overview & Metrics</h1>
+            <p class="page-subtitle" id="current-page-subtitle">ANSI C Structure & Binary Record Management System</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="quick-stats-pill">
+            <span class="pill-label">Total Stock:</span>
+            <span class="pill-val" id="topbar-total-stock">0</span>
+            <span class="pill-divider">|</span>
+            <span class="pill-label">Available:</span>
+            <span class="pill-val text-emerald" id="topbar-avail-stock">0</span>
+            <span class="pill-divider">|</span>
+            <span class="pill-label">Circulating:</span>
+            <span class="pill-val text-amber" id="topbar-borrowed-stock">0</span>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-quick-give-book">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 3 4 4-4 4"></path><path d="M20 7H4"></path></svg>
+            Give Book to Customer
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 0: OVERVIEW / DASHBOARD -->
+      <section class="tab-pane active" id="pane-dashboard">
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+          <div class="card metric-card">
+            <div class="metric-icon metric-icon-blue">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
+            </div>
+            <div class="metric-content">
+              <span class="metric-label">Book Titles Catalogue</span>
+              <span class="metric-value" id="dash-total-titles">14</span>
+              <span class="metric-sub" id="dash-total-copies">70 Total Physical Copies</span>
+            </div>
+          </div>
+
+          <div class="card metric-card">
+            <div class="metric-icon metric-icon-emerald">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="metric-content">
+              <span class="metric-label">Present Available Copies</span>
+              <span class="metric-value text-emerald" id="dash-avail-copies">66</span>
+              <span class="metric-sub">Ready on shelves for checkout</span>
+            </div>
+          </div>
+
+          <div class="card metric-card">
+            <div class="metric-icon metric-icon-amber">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="metric-content">
+              <span class="metric-label">Issued / Circulating</span>
+              <span class="metric-value text-amber" id="dash-issued-copies">4</span>
+              <span class="metric-sub">Currently held by members</span>
+            </div>
+          </div>
+
+          <div class="card metric-card">
+            <div class="metric-icon metric-icon-purple">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <div class="metric-content">
+              <span class="metric-label">Registered Members</span>
+              <span class="metric-value text-purple" id="dash-registered-users">4</span>
+              <span class="metric-sub" id="dash-active-borrowers-sub">3 members with active loans</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Customer Handout / Return Process Hub -->
+        <div class="card process-hub-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Customer Circulation Fast-Desk</h2>
+              <p class="card-desc">Directly give books to customers or receive returns with instant stock recalculation</p>
+            </div>
+            <span class="tag tag-cyan">Module 3 Direct Pipeline</span>
+          </div>
+          <div class="fast-desk-grid">
+            <!-- Issue Form Quick -->
+            <div class="fast-desk-panel">
+              <h3 class="panel-subtitle text-cyan">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 3 4 4-4 4"></path><path d="M20 7H4"></path></svg>
+                Hand Out Book to Customer (Issue)
+              </h3>
+              <div class="quick-form-row">
+                <div class="form-group flex-1">
+                  <label for="quick-issue-user">Select Member:</label>
+                  <select id="quick-issue-user" class="form-select"></select>
+                </div>
+                <div class="form-group flex-1">
+                  <label for="quick-issue-book">Select Book (Stock > 0):</label>
+                  <select id="quick-issue-book" class="form-select"></select>
+                </div>
+                <div class="form-group auto-btn">
+                  <label>&nbsp;</label>
+                  <button class="btn btn-primary w-100" id="btn-do-quick-issue">
+                    Confirm & Issue
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Return Quick -->
+            <div class="fast-desk-panel">
+              <h3 class="panel-subtitle text-emerald">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 21-4-4 4-4"></path><path d="M4 17h16"></path></svg>
+                Receive Book Return from Customer
+              </h3>
+              <div class="quick-form-row">
+                <div class="form-group flex-2">
+                  <label for="quick-return-record">Select Active Loan Record:</label>
+                  <select id="quick-return-record" class="form-select"></select>
+                </div>
+                <div class="form-group auto-btn">
+                  <label>&nbsp;</label>
+                  <button class="btn btn-emerald w-100" id="btn-do-quick-return">
+                    Process Return & Restock
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Charts Preview -->
+        <div class="charts-2col-grid">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Present Books Stock Overview (Total vs Available)</h2>
+              <button class="btn btn-xs btn-outline" data-action="switch-tab" data-target="reports">View Full Reports</button>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-dash-books"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Category Distribution & Availability</h2>
+              <span class="tag tag-blue">6 Collections</span>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-dash-categories"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Loans Live Ledger -->
+        <div class="card mt-4">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Currently Circulating Books (Active Loans)</h2>
+              <p class="card-desc">Books currently checked out by members with auto-due dates</p>
+            </div>
+            <button class="btn btn-sm btn-outline" data-action="switch-tab" data-target="issue-return">Go to Full Circulation Module</button>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rec ID</th>
+                  <th>Member</th>
+                  <th>Book Title</th>
+                  <th>Borrowed Date</th>
+                  <th>Return / Due Status</th>
+                  <th>Quick Action</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-dash-active-loans">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: USER MANAGEMENT MODULE -->
+      <section class="tab-pane" id="pane-users">
+        <div class="module-header-bar">
+          <div class="module-info">
+            <div class="module-code-tag">Module 1: users.dat (sizeof(struct User) = 236 bytes)</div>
+            <h2>Member Management Directory</h2>
+            <p>Register, view, search, and manage library members with institutional email and role privileges.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-open-add-user-modal">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Register New Member
+          </button>
+        </div>
+
+        <div class="toolbar-card">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="input-search-users" placeholder="Search members by Name, ID, or Email...">
+          </div>
+          <div class="filter-group">
+            <label>Role:</label>
+            <select id="select-filter-user-role" class="form-select-sm">
+              <option value="all">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="faculty">Faculty</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Loans:</label>
+            <select id="select-filter-user-loans" class="form-select-sm">
+              <option value="all">All Members</option>
+              <option value="active">With Active Loans</option>
+              <option value="none">No Active Loans</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Member Name</th>
+                  <th>Institutional Email</th>
+                  <th>Role</th>
+                  <th>Active Loans</th>
+                  <th>Byte Offset (users.dat)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-users-list">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: BOOK MANAGEMENT MODULE -->
+      <section class="tab-pane" id="pane-books">
+        <div class="module-header-bar">
+          <div class="module-info">
+            <div class="module-code-tag">Module 2: books.dat (sizeof(struct Book) = 264 bytes)</div>
+            <h2>Library Book Catalogue & Inventory</h2>
+            <p>Maintain repository titles, search via simulated <code>fseek()</code> offsets, and dynamically adjust physical stock levels.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="btn-open-add-book-modal">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add New Book Record
+            </button>
+          </div>
+        </div>
+
+        <div class="toolbar-card">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="input-search-books" placeholder="Search by Book Title, Author, ID, or Category...">
+          </div>
+          <div class="filter-group">
+            <label>Category:</label>
+            <select id="select-filter-book-category" class="form-select-sm">
+              <option value="all">All Categories</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Science">Science</option>
+              <option value="Fiction">Fiction</option>
+              <option value="History">History</option>
+              <option value="Business">Business</option>
+              <option value="Self Development">Self Development</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Availability:</label>
+            <select id="select-filter-book-stock" class="form-select-sm">
+              <option value="all">All Stock Status</option>
+              <option value="in-stock">Available on Shelf (>0)</option>
+              <option value="out-of-stock">Checked Out (0)</option>
+              <option value="low-stock">Low Stock (≤ 2)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Book ID</th>
+                  <th>Title & Author</th>
+                  <th>Category</th>
+                  <th>Total Stock</th>
+                  <th>Available on Shelf</th>
+                  <th>Stock Progress</th>
+                  <th>Byte Offset</th>
+                  <th>Adjust Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-books-list">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: ISSUE & RETURN MANAGEMENT MODULE -->
+      <section class="tab-pane" id="pane-issue-return">
+        <div class="module-header-bar">
+          <div class="module-info">
+            <div class="module-code-tag">Module 3: borrow_records.dat (sizeof(struct BorrowRecord) = 56 bytes)</div>
+            <h2>Issue & Return Circulation Management</h2>
+            <p>Track customer checkout transactions, calculate return due dates, renew active loans, and audit the circulation ledger.</p>
+          </div>
+        </div>
+
+        <div class="issue-return-panels-grid">
+          <!-- Issue Card -->
+          <div class="card form-panel-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title text-cyan">Issue Book to Customer</h3>
+                <p class="card-desc">Decrements book stock, increments user loan count, stamps 14-day due date</p>
+              </div>
+              <span class="tag tag-blue">Checkout Desk</span>
+            </div>
+            <form id="form-issue-book">
+              <div class="form-group mb-3">
+                <label for="issue-select-user">Select Borrower (Member):</label>
+                <select id="issue-select-user" class="form-select" required></select>
+                <small class="form-hint" id="issue-user-info"></small>
+              </div>
+
+              <div class="form-group mb-3">
+                <label for="issue-select-book">Select Book to Issue:</label>
+                <select id="issue-select-book" class="form-select" required></select>
+                <small class="form-hint" id="issue-book-info"></small>
+              </div>
+
+              <div class="form-row-2 mb-3">
+                <div class="form-group">
+                  <label for="issue-borrow-date">Issue Date:</label>
+                  <input type="date" id="issue-borrow-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="issue-due-info">Due Policy:</label>
+                  <input type="text" id="issue-due-info" class="form-input" value="14 Days Standard Loan" readonly>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100" id="btn-submit-issue">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Execute Issue (Append to borrow_records.dat)
+              </button>
+            </form>
+          </div>
+
+          <!-- Return & Renew Card -->
+          <div class="card form-panel-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title text-emerald">Return / Renew Management</h3>
+                <p class="card-desc">Process customer check-ins to restock shelves or extend loan duration</p>
+              </div>
+              <span class="tag tag-emerald">Check-in Desk</span>
+            </div>
+            <div class="return-workflow-box">
+              <div class="form-group mb-3">
+                <label for="return-select-record">Select Active Loan to Process:</label>
+                <select id="return-select-record" class="form-select"></select>
+                <small class="form-hint" id="return-record-details">Select a record to view details</small>
+              </div>
+
+              <div class="return-actions-row">
+                <button class="btn btn-emerald flex-1" id="btn-submit-return">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 21-4-4 4-4"></path><path d="M4 17h16"></path></svg>
+                  Process Return & Restock
+                </button>
+                <button class="btn btn-outline-warning flex-1" id="btn-submit-renew">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                  Renew Loan (+14 Days)
+                </button>
+              </div>
+
+              <div class="return-policy-note mt-3">
+                <strong>ANSI C AutoLibris Logic:</strong>
+                <ul>
+                  <li>Returning increments <code>book.available</code> (clamped to <code>quantity</code>).</li>
+                  <li>Decrements <code>user.activeBorrows</code>.</li>
+                  <li>Updates <code>borrow_records.dat</code> in-place with current return date.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Transaction Ledger -->
+        <div class="card mt-4">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Circulation Transaction Ledger (All Records)</h3>
+              <p class="card-desc">Chronological history of all checkout, renewal, and return operations</p>
+            </div>
+            <div class="ledger-filters">
+              <select id="select-filter-ledger-status" class="form-select-sm">
+                <option value="all">All Transactions</option>
+                <option value="active">Active Only</option>
+                <option value="returned">Returned Only</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rec ID</th>
+                  <th>Member Name</th>
+                  <th>Book Title</th>
+                  <th>Issued Date</th>
+                  <th>Return / Due Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-ledger-list">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: FILE MANAGEMENT MODULE -->
+      <section class="tab-pane" id="pane-file-management">
+        <div class="module-header-bar">
+          <div class="module-info">
+            <div class="module-code-tag">Module 4: Binary Records Engine & Storage Layout</div>
+            <h2>Binary File Management & Hex Offset Inspector</h2>
+            <p>Low-level inspection of fixed-size binary structs, byte offsets (<code>fseek</code> random access), hex dumps, and file integrity.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline" id="btn-download-dat-files">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export Binary Data Package
+            </button>
+          </div>
+        </div>
+
+        <!-- Storage Statistics Summary -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3 class="card-title">Binary File Storage Engine Footprint</h3>
+            <span class="tag tag-cyan">Direct Mapping to ANSI C Struct Sizes</span>
+          </div>
+          <div class="file-metrics-table-wrapper">
+            <table class="data-table font-mono">
+              <thead>
+                <tr>
+                  <th>Binary File</th>
+                  <th>C Struct Name</th>
+                  <th>Record Size</th>
+                  <th>Record Count</th>
+                  <th>Total File Size</th>
+                  <th>Calculated Footprint</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-file-stats">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="file-tools-2col-grid">
+          <!-- Byte Offset Calculator -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Byte Offset Calculator (fseek Simulation)</h3>
+                <p class="card-desc">Calculates exact disk seek address: <code>offset = index * sizeof(struct)</code></p>
+              </div>
+            </div>
+            <div class="calculator-box">
+              <div class="form-row-2 mb-3">
+                <div class="form-group">
+                  <label for="calc-file-select">Target Binary File:</label>
+                  <select id="calc-file-select" class="form-select">
+                    <option value="books">books.dat (264 bytes/rec)</option>
+                    <option value="users">users.dat (236 bytes/rec)</option>
+                    <option value="records">borrow_records.dat (56 bytes/rec)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="calc-record-index">Record Index (0-based):</label>
+                  <input type="number" id="calc-record-index" class="form-input" min="0" value="0">
+                </div>
+              </div>
+
+              <div class="calc-results-display font-mono">
+                <div class="calc-res-item">
+                  <span class="calc-lbl">Struct Size:</span>
+                  <span class="calc-val text-cyan" id="calc-struct-size">264 Bytes</span>
+                </div>
+                <div class="calc-res-item">
+                  <span class="calc-lbl">Decimal Offset:</span>
+                  <span class="calc-val text-emerald" id="calc-dec-offset">0 Bytes</span>
+                </div>
+                <div class="calc-res-item">
+                  <span class="calc-lbl">Hexadecimal (0x):</span>
+                  <span class="calc-val text-purple" id="calc-hex-offset">0x00000000</span>
+                </div>
+                <div class="calc-res-item">
+                  <span class="calc-lbl">Simulated C Call:</span>
+                  <span class="calc-val text-amber" id="calc-c-code">fseek(fp, 0L, SEEK_SET);</span>
+                </div>
+              </div>
+
+              <div class="calc-record-preview mt-3">
+                <div class="preview-header">Record Payload at this Offset:</div>
+                <pre class="code-block font-mono" id="calc-record-json">// Record contents</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hex Dump Inspector -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Simulated Binary Hex Dump Inspector</h3>
+                <p class="card-desc">16-byte aligned binary hex inspection matching <code>displayHexDumpSample()</code></p>
+              </div>
+              <select id="hex-file-select" class="form-select-sm">
+                <option value="books">books.dat</option>
+                <option value="users">users.dat</option>
+                <option value="records">borrow_records.dat</option>
+              </select>
+            </div>
+            <div class="hex-dump-terminal">
+              <div class="hex-terminal-header font-mono">
+                Offset &nbsp; &nbsp;| 00 01 02 03 04 05 06 07 &nbsp;08 09 0A 0B 0C 0D 0E 0F | ASCII
+              </div>
+              <div class="hex-terminal-body font-mono" id="hex-dump-output">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+            <div class="hex-controls mt-2">
+              <span class="text-muted text-xs">Viewing raw packed struct byte representation</span>
+              <button class="btn btn-xs btn-outline" id="btn-rebuild-indexes">Verify & Rebuild Indexes</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: REPORT GENERATION & GRAPHS MODULE -->
+      <section class="tab-pane" id="pane-reports">
+        <div class="module-header-bar">
+          <div class="module-info">
+            <div class="module-code-tag">Module 5: Dynamic Analytics, Graphs & Audit Reports</div>
+            <h2>Inventory Analytics, Visual Graphs & Audit Reports</h2>
+            <p>Comprehensive graphical breakdown of present books, customer loan status, dynamic stock adjustments, and text report downloads.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline" id="btn-download-issued-report">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              Download issued_books_report.txt
+            </button>
+            <button class="btn btn-primary" id="btn-download-audit-report">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              Download report.txt
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Customer Handout & Stock Management Widget inside Reports -->
+        <div class="card mb-4 highlight-card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title text-cyan">Interactive Book Distribution & Present Stock Modifier</h3>
+              <p class="card-desc">Give books to customers, receive returns, or add/remove shelf inventory. All graphs below update live in real-time!</p>
+            </div>
+            <span class="tag tag-emerald">Real-time Reactive Visuals</span>
+          </div>
+
+          <div class="stock-process-strip">
+            <div class="process-col">
+              <h4 class="strip-heading text-cyan">
+                <span class="step-badge">1</span> Give Book to Customer (Issue)
+              </h4>
+              <div class="strip-inputs">
+                <select id="report-quick-user" class="form-select-sm"></select>
+                <select id="report-quick-book" class="form-select-sm"></select>
+                <button class="btn btn-sm btn-primary" id="btn-report-give-book">
+                  Give Book
+                </button>
+              </div>
+            </div>
+
+            <div class="process-divider"></div>
+
+            <div class="process-col">
+              <h4 class="strip-heading text-emerald">
+                <span class="step-badge">2</span> Receive Return from Customer
+              </h4>
+              <div class="strip-inputs">
+                <select id="report-quick-return-rec" class="form-select-sm"></select>
+                <button class="btn btn-sm btn-emerald" id="btn-report-return-book">
+                  Receive Return
+                </button>
+              </div>
+            </div>
+
+            <div class="process-divider"></div>
+
+            <div class="process-col">
+              <h4 class="strip-heading text-purple">
+                <span class="step-badge">3</span> Warehouse Stock Replenishment (+/-)
+              </h4>
+              <div class="strip-inputs">
+                <select id="report-stock-adjust-book" class="form-select-sm"></select>
+                <button class="btn btn-sm btn-outline-success" id="btn-report-stock-inc" title="Add 1 copy to stock">+1 Copy</button>
+                <button class="btn btn-sm btn-outline-danger" id="btn-report-stock-dec" title="Remove 1 copy from stock">-1 Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRAPHS SECTION -->
+        <div class="reports-graphs-grid">
+          <!-- Graph 1: Present Books Stock & Availability -->
+          <div class="card graph-card-wide">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Present Books Inventory: Available on Shelf vs. Issued Out</h3>
+                <p class="card-desc">Bar graph comparing total copies against currently available and issued copies for each present title</p>
+              </div>
+              <div class="graph-toolbar">
+                <select id="select-graph-category-filter" class="form-select-sm">
+                  <option value="all">All Categories</option>
+                  <option value="Computer Science">Computer Science</option>
+                  <option value="Science">Science</option>
+                  <option value="Fiction">Fiction</option>
+                  <option value="History">History</option>
+                  <option value="Business">Business</option>
+                  <option value="Self Development">Self Development</option>
+                </select>
+              </div>
+            </div>
+            <div class="chart-container-large">
+              <canvas id="chart-present-books-bar"></canvas>
+            </div>
+          </div>
+
+          <!-- Graph 2: Category Distribution -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Collection Category Breakdown</h3>
+                <p class="card-desc">Volume of books across academic & literary categories</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-categories-doughnut"></canvas>
+            </div>
+          </div>
+
+          <!-- Graph 3: Inventory Health / Circulation Rate -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Library Circulation Health</h3>
+                <p class="card-desc">Proportion of collection on shelf vs actively circulating</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-circulation-polar"></canvas>
+            </div>
+          </div>
+
+          <!-- Graph 4: User Role Borrowing Habits -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Borrowing Activity by Member Role</h3>
+                <p class="card-desc">Active checkout volume by Admin, Faculty, and Student</p>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart-roles-bar"></canvas>
+            </div>
+          </div>
+
+          <!-- Graph 5: Low Stock Alert Watchlist -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Low Available Stock Watchlist (≤ 2 Copies)</h3>
+                <p class="card-desc">Titles requiring warehouse reordering or customer return reminders</p>
+              </div>
+            </div>
+            <div class="low-stock-list-container" id="low-stock-watchlist">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Report Previews Matching C output -->
+        <div class="text-reports-grid mt-4">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Live Preview: issued_books_report.txt</h3>
+              <button class="btn btn-xs btn-outline" id="btn-preview-issued-copy">Copy Text</button>
+            </div>
+            <pre class="report-terminal-pre font-mono" id="preview-issued-report"></pre>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Live Preview: report.txt (Comprehensive Audit)</h3>
+              <button class="btn btn-xs btn-outline" id="btn-preview-audit-copy">Copy Text</button>
+            </div>
+            <pre class="report-terminal-pre font-mono" id="preview-audit-report"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: RAM POINTERS & LINKED LIST SIMULATOR -->
+      <section class="tab-pane" id="pane-ram-pointers">
+        <div class="module-header-bar">
+          <div class="module-info">
+            <div class="module-code-tag">Dynamic RAM Simulation: struct BookNode* loadBooksToLinkedList()</div>
+            <h2>Dynamic RAM Linked List & Pointer Visualizer</h2>
+            <p>Visualizes dynamic heap memory allocation (<code>malloc()</code>), simulated 64-bit RAM pointer addresses, and <code>free()</code> node traversals.</p>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" id="btn-reload-linked-list">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+              Simulate malloc() & Traverse (*head)
+            </button>
+            <button class="btn btn-outline-danger" id="btn-free-linked-list">
+              Simulate free(*head)
+            </button>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3 class="card-title">Simulated Heap Memory Chain (*head Pointers)</h3>
+            <span class="tag tag-purple" id="ram-node-count">14 Nodes in RAM</span>
+          </div>
+          <div class="linked-list-nodes-chain" id="linked-list-container">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">C Pointer Traversal Console Output</h3>
+          </div>
+          <pre class="code-block font-mono" id="ram-console-output">// Console log will appear here...</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: ADD / REGISTER NEW MEMBER -->
+  <dialog class="modal-dialog" id="modal-add-user">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Register New Library Member (users.dat)</h3>
+        <button class="modal-close" id="btn-close-user-modal" aria-label="Close">&times;</button>
+      </div>
+      <form id="form-add-user">
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="new-user-id">Member ID (Integer):</label>
+            <input type="number" id="new-user-id" class="form-input" min="1" required placeholder="e.g. 5">
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-user-name">Full Name (char name[100]):</label>
+            <input type="text" id="new-user-name" class="form-input" maxlength="99" required placeholder="e.g. Eleanor Vance">
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-user-email">Institutional Email (char email[100]):</label>
+            <input type="email" id="new-user-email" class="form-input" maxlength="99" required placeholder="e.g. eleanor.vance@autolibris.edu">
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-user-role">Member Role:</label>
+            <select id="new-user-role" class="form-select" required>
+              <option value="student">student</option>
+              <option value="faculty">faculty</option>
+              <option value="admin">admin</option>
+            </select>
+          </div>
+          <div class="form-hint">
+            Record will be appended as binary struct User (236 bytes) with activeBorrows initialized to 0.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-user-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Member</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: ADD NEW BOOK RECORD -->
+  <dialog class="modal-dialog" id="modal-add-book">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add New Book to Catalogue (books.dat)</h3>
+        <button class="modal-close" id="btn-close-book-modal" aria-label="Close">&times;</button>
+      </div>
+      <form id="form-add-book">
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="new-book-id">Book ID (int):</label>
+            <input type="number" id="new-book-id" class="form-input" min="1" required placeholder="e.g. 115">
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-book-title">Book Title (char title[100]):</label>
+            <input type="text" id="new-book-title" class="form-input" maxlength="99" required placeholder="e.g. Structure and Interpretation of Computer Programs">
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-book-author">Author (char author[100]):</label>
+            <input type="text" id="new-book-author" class="form-input" maxlength="99" required placeholder="e.g. Harold Abelson & Gerald Jay Sussman">
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-book-category">Category (char category[50]):</label>
+            <select id="new-book-category" class="form-select" required>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Science">Science</option>
+              <option value="Fiction">Fiction</option>
+              <option value="History">History</option>
+              <option value="Business">Business</option>
+              <option value="Self Development">Self Development</option>
+              <option value="General Reference">General Reference</option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label for="new-book-quantity">Total Stock Quantity (int):</label>
+            <input type="number" id="new-book-quantity" class="form-input" min="1" value="5" required>
+          </div>
+          <div class="form-hint">
+            Initial available stock will match total quantity. Record size is 264 bytes in books.dat.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-book-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Book Record</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: EDIT BOOK RECORD IN PLACE -->
+  <dialog class="modal-dialog" id="modal-edit-book">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Update Book Record In-Place (fseek + fwrite)</h3>
+        <button class="modal-close" id="btn-close-edit-book-modal" aria-label="Close">&times;</button>
+      </div>
+      <form id="form-edit-book">
+        <input type="hidden" id="edit-book-id">
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label>Book ID:</label>
+            <input type="text" id="edit-book-id-display" class="form-input" readonly disabled>
+          </div>
+          <div class="form-group mb-3">
+            <label for="edit-book-title">Title:</label>
+            <input type="text" id="edit-book-title" class="form-input" maxlength="99" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="edit-book-author">Author:</label>
+            <input type="text" id="edit-book-author" class="form-input" maxlength="99" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="edit-book-category">Category:</label>
+            <input type="text" id="edit-book-category" class="form-input" maxlength="49" required>
+          </div>
+          <div class="form-row-2 mb-3">
+            <div class="form-group">
+              <label for="edit-book-quantity">Total Quantity:</label>
+              <input type="number" id="edit-book-quantity" class="form-input" min="1" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-book-available">Available Stock:</label>
+              <input type="number" id="edit-book-available" class="form-input" min="0" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-edit-book-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save In-Place Changes</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: USER BORROWING HISTORY -->
+  <dialog class="modal-dialog modal-lg" id="modal-user-history">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="user-history-title">Member Borrowing History</h3>
+        <button class="modal-close" id="btn-close-history-modal" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>RecID</th>
+                <th>Book Title</th>
+                <th>Issued Date</th>
+                <th>Return / Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-user-history">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="btn-close-history-modal-btn">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
